@@ -27,17 +27,17 @@ GitHub Actions ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs on 
 
 - `cargo test`, [`./coverage.sh`](coverage.sh) (90% line coverage on the library), and [`./smoke.sh`](smoke.sh)
 
-On push to `main`, CI also cross-compiles release binaries for Linux (GNU and musl), macOS, and Windows using [`docker/Dockerfile.build`](docker/Dockerfile.build), then publishes them on the **`nightly`** GitHub pre-release (see Releases in this repository):
+On push to `main`, CI also cross-compiles release binaries for Linux (GNU and musl), macOS, and Windows using [`docker/Dockerfile.build`](docker/Dockerfile.build), then publishes them on the [**nightly**](https://github.com/3p3r/yadoc2md/releases/tag/nightly) pre-release:
 
 | Artifact | Target |
 |----------|--------|
-| `yadoc2md-linux-x64` | `x86_64-unknown-linux-gnu` |
-| `yadoc2md-linux-arm64` | `aarch64-unknown-linux-gnu` |
-| `yadoc2md-linux-musl-x64` | `x86_64-unknown-linux-musl` |
-| `yadoc2md-linux-musl-arm64` | `aarch64-unknown-linux-musl` |
-| `yadoc2md-darwin-x64` | `x86_64-apple-darwin` |
-| `yadoc2md-darwin-arm64` | `aarch64-apple-darwin` |
-| `yadoc2md-win32-x64.exe` | `x86_64-pc-windows-gnu` |
+| [yadoc2md-linux-x64](https://github.com/3p3r/yadoc2md/releases/download/nightly/yadoc2md-linux-x64) | `x86_64-unknown-linux-gnu` |
+| [yadoc2md-linux-arm64](https://github.com/3p3r/yadoc2md/releases/download/nightly/yadoc2md-linux-arm64) | `aarch64-unknown-linux-gnu` |
+| [yadoc2md-linux-musl-x64](https://github.com/3p3r/yadoc2md/releases/download/nightly/yadoc2md-linux-musl-x64) | `x86_64-unknown-linux-musl` |
+| [yadoc2md-linux-musl-arm64](https://github.com/3p3r/yadoc2md/releases/download/nightly/yadoc2md-linux-musl-arm64) | `aarch64-unknown-linux-musl` |
+| [yadoc2md-darwin-x64](https://github.com/3p3r/yadoc2md/releases/download/nightly/yadoc2md-darwin-x64) | `x86_64-apple-darwin` |
+| [yadoc2md-darwin-arm64](https://github.com/3p3r/yadoc2md/releases/download/nightly/yadoc2md-darwin-arm64) | `aarch64-apple-darwin` |
+| [yadoc2md-win32-x64.exe](https://github.com/3p3r/yadoc2md/releases/download/nightly/yadoc2md-win32-x64.exe) | `x86_64-pc-windows-gnu` |
 
 ## CLI
 
