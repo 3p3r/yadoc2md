@@ -115,7 +115,6 @@ jobs:
 
       - name: Cross-compile release binary
         run: |
-          TARGET_DIR="cross-target/${{ matrix.target }}"
           if [[ "${{ matrix.use_zigbuild }}" == "true" ]]; then
             BUILD_CMD="cargo zigbuild --release --target ${{ matrix.target }}"
           else
@@ -124,17 +123,17 @@ jobs:
           docker run --rm \
             -v "$GITHUB_WORKSPACE:/build" -w /build \
             -e CARGO_HOME=/build/.cargo-home \
-            -e CARGO_TARGET_DIR="/build/${TARGET_DIR}" \
+            -e CARGO_TARGET_DIR=/build/cross-target \
             yadoc2md-build:ci -c "rustup target add ${{ matrix.target }} && ${BUILD_CMD}"
 
       - name: Copy binary to artifacts
         run: |
           mkdir -p artifacts
-          TARGET_DIR="cross-target/${{ matrix.target }}"
+          RELEASE_DIR="cross-target/${{ matrix.target }}/release"
           if [[ "${{ matrix.target }}" == *"windows"* ]]; then
-            cp "${TARGET_DIR}/release/yadoc2md.exe" "artifacts/${{ matrix.binary }}"
+            cp "${RELEASE_DIR}/yadoc2md.exe" "artifacts/${{ matrix.binary }}"
           else
-            cp "${TARGET_DIR}/release/yadoc2md" "artifacts/${{ matrix.binary }}"
+            cp "${RELEASE_DIR}/yadoc2md" "artifacts/${{ matrix.binary }}"
             chmod +x "artifacts/${{ matrix.binary }}"
           fi
 
