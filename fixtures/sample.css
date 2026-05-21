@@ -1,0 +1,16 @@
+:root {
+  --primary: #3b82f6;
+  --bg: #ffffff;
+}
+
+body {
+  font-family: sans-serif;
+  background: var(--bg);
+  color: #111;
+  margin: 0;
+  padding: 1rem;
+}
+
+h1 {
+  color: var(--primary);
+}

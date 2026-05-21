@@ -1,0 +1,22 @@
+[package]
+name = "yadoc2md"
+version = "0.1.0"
+edition = "2021"
+description = "Yet Another Document to Markdown converter"
+license = "MIT"
+
+[[bin]]
+name = "yadoc2md"
+path = "src/main.rs"
+
+[dependencies]
+anytomd = { version = "1", default-features = false }
+unpdf = "0.6"
+salvo = { version = "0.93", features = ["cors", "affix-state", "size-limiter", "oapi"] }
+clap = { version = "4", features = ["derive"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+tracing = "0.1"
+tracing-subscriber = "0.3"
+thiserror = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

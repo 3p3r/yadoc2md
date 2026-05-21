@@ -1,0 +1,6 @@
+This is a sample plain text file.
+
+It contains multiple lines of text.
+You can use it to test text rendering.
+
+The quick brown fox jumps over the lazy dog.
