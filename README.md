@@ -14,6 +14,7 @@ Run CLI and REST checks against every file in [`fixtures/`](fixtures/):
 
 ```bash
 ./smoke.sh
+./coverage.sh
 ```
 
 The script builds the binary, converts each supported fixture via `yadoc2md parse`, starts a temporary server, and exercises `POST /api/parse` plus health/OpenAPI/Swagger routes. Unsupported types (`sample.css`, `sample.mp4`, `sample.wav`) must fail in both modes.
@@ -65,6 +66,7 @@ yadoc2md serve --host 0.0.0.0 --port 9876 --cors http://localhost:3000
 
 | Method | Path | Description |
 |--------|------|-------------|
+| `GET` | `/` | Redirects to Swagger UI |
 | `GET` | `/api/health` | Health check (`{"status":"ok"}`) |
 | `POST` | `/api/parse` | Upload `multipart/form-data` field `file`, returns markdown |
 | `GET` | `/api-doc/openapi.json` | OpenAPI 3 specification |

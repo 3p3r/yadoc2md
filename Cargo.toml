@@ -5,9 +5,15 @@ edition = "2021"
 description = "Yet Another Document to Markdown converter"
 license = "MIT"
 
+[lib]
+path = "src/lib.rs"
+
 [[bin]]
 name = "yadoc2md"
 path = "src/main.rs"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 
 [dependencies]
 anytomd = { version = "1", default-features = false }

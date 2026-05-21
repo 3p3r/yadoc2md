@@ -1,11 +1,6 @@
-mod config;
-mod convert;
-mod parse;
-mod serve;
-
 use clap::{Parser, Subcommand};
-use parse::ParseArgs;
-use serve::ServeArgs;
+use yadoc2md::parse::{ParseArgs, run as run_parse};
+use yadoc2md::serve::ServeArgs;
 
 #[derive(Debug, Parser)]
 #[command(name = "yadoc2md", about = "Document to Markdown converter")]
@@ -25,9 +20,9 @@ enum Command {
 fn main() {
     let cli = Cli::parse();
     let code = match cli.command {
-        Command::Parse(args) => parse::run(args),
+        Command::Parse(args) => run_parse(args),
         Command::Serve(args) => match tokio::runtime::Runtime::new() {
-            Ok(rt) => match rt.block_on(serve::run(args)) {
+            Ok(rt) => match rt.block_on(yadoc2md::serve::run(args)) {
                 Ok(()) => 0,
                 Err(e) => {
                     eprintln!("{e}");

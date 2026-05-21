@@ -110,11 +110,43 @@ mod tests {
     fn parses_sizes() {
         assert_eq!(parse_byte_size("100MB").unwrap(), 100 * 1024 * 1024);
         assert_eq!(parse_byte_size("1GB").unwrap(), 1024 * 1024 * 1024);
+        assert_eq!(parse_byte_size("512").unwrap(), 512);
+        assert_eq!(parse_byte_size("1KB").unwrap(), 1024);
+    }
+
+    #[test]
+    fn parse_byte_size_rejects_empty_and_invalid() {
+        assert!(parse_byte_size("").is_err());
+        assert!(parse_byte_size("abc").is_err());
+        assert!(parse_byte_size("-1MB").is_err());
+        assert!(parse_byte_size("1PB").is_err());
     }
 
     #[test]
     fn extracts_extension() {
         assert_eq!(extension_from_filename("doc.PDF").unwrap(), "pdf");
         assert_eq!(extension_from_filename("a.csv").unwrap(), "csv");
+        assert_eq!(extension_from_filename("path/to/file.HTML").unwrap(), "html");
+    }
+
+    #[test]
+    fn extension_errors_without_dot() {
+        assert!(extension_from_filename("nodot").is_err());
+        assert!(extension_from_filename("file.").is_err());
+    }
+
+    #[test]
+    fn default_config_matches_library_limits() {
+        let cfg = ConvertConfig::default();
+        assert_eq!(cfg.max_input_bytes, 100 * 1024 * 1024);
+        assert!(!cfg.strict);
+        assert!(cfg.pdf_password.is_none());
+    }
+
+    #[test]
+    fn anytomd_options_disables_image_extraction() {
+        let opts = ConvertConfig::default().anytomd_options();
+        assert!(!opts.extract_images);
+        assert!(opts.image_describer.is_none());
     }
 }
