@@ -97,18 +97,25 @@ jobs:
       - name: Build Dockerfile.build
         run: docker build -f docker/Dockerfile.build -t yadoc2md-build:ci .
 
-      - name: Cache cross-compile artifacts
+      - name: Cache cargo registry
         uses: actions/cache@v4
         with:
-          path: |
-            target
-            .cargo-home
-          key: cross-${{ matrix.target }}-${{ hashFiles('**/Cargo.lock') }}
+          path: .cargo-home
+          key: cross-cargo-v2-${{ matrix.target }}-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
-            cross-${{ matrix.target }}-
+            cross-cargo-v2-${{ matrix.target }}-
+
+      - name: Cache cross-target build dir
+        uses: actions/cache@v4
+        with:
+          path: cross-target/${{ matrix.target }}
+          key: cross-target-v2-${{ matrix.target }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            cross-target-v2-${{ matrix.target }}-
 
       - name: Cross-compile release binary
         run: |
+          TARGET_DIR="cross-target/${{ matrix.target }}"
           if [[ "${{ matrix.use_zigbuild }}" == "true" ]]; then
             BUILD_CMD="cargo zigbuild --release --target ${{ matrix.target }}"
           else
@@ -117,16 +124,17 @@ jobs:
           docker run --rm \
             -v "$GITHUB_WORKSPACE:/build" -w /build \
             -e CARGO_HOME=/build/.cargo-home \
-            -e CARGO_TARGET_DIR=/build/target \
-            yadoc2md-build:ci -c "$BUILD_CMD"
+            -e CARGO_TARGET_DIR="/build/${TARGET_DIR}" \
+            yadoc2md-build:ci -c "rustup target add ${{ matrix.target }} && ${BUILD_CMD}"
 
       - name: Copy binary to artifacts
         run: |
           mkdir -p artifacts
+          TARGET_DIR="cross-target/${{ matrix.target }}"
           if [[ "${{ matrix.target }}" == *"windows"* ]]; then
-            cp "target/${{ matrix.target }}/release/yadoc2md.exe" "artifacts/${{ matrix.binary }}"
+            cp "${TARGET_DIR}/release/yadoc2md.exe" "artifacts/${{ matrix.binary }}"
           else
-            cp "target/${{ matrix.target }}/release/yadoc2md" "artifacts/${{ matrix.binary }}"
+            cp "${TARGET_DIR}/release/yadoc2md" "artifacts/${{ matrix.binary }}"
             chmod +x "artifacts/${{ matrix.binary }}"
           fi
 
