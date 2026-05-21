@@ -21,6 +21,24 @@ The script builds the binary, converts each supported fixture via `yadoc2md pars
 
 The binary is `target/release/yadoc2md`.
 
+## CI
+
+GitHub Actions ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs on every push and pull request to `main`:
+
+- `cargo test`, [`./coverage.sh`](coverage.sh) (90% line coverage on the library), and [`./smoke.sh`](smoke.sh)
+
+On push to `main`, CI also cross-compiles release binaries for Linux (GNU and musl), macOS, and Windows using [`docker/Dockerfile.build`](docker/Dockerfile.build), then publishes them on the **`nightly`** GitHub pre-release (see Releases in this repository):
+
+| Artifact | Target |
+|----------|--------|
+| `yadoc2md-linux-x64` | `x86_64-unknown-linux-gnu` |
+| `yadoc2md-linux-arm64` | `aarch64-unknown-linux-gnu` |
+| `yadoc2md-linux-musl-x64` | `x86_64-unknown-linux-musl` |
+| `yadoc2md-linux-musl-arm64` | `aarch64-unknown-linux-musl` |
+| `yadoc2md-darwin-x64` | `x86_64-apple-darwin` |
+| `yadoc2md-darwin-arm64` | `aarch64-apple-darwin` |
+| `yadoc2md-win32-x64.exe` | `x86_64-pc-windows-gnu` |
+
 ## CLI
 
 Convert a file to markdown (extension selects the backend):
