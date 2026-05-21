@@ -43,10 +43,11 @@ jobs:
   cross-compile:
     name: Cross-compile (${{ matrix.name }})
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: quality
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         include:
           - os: ubuntu-latest
